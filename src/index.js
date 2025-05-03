@@ -27,26 +27,36 @@ const spice = (client) => {
 
 
 
-// post what the weather will be like this week
+// post what the weather will be like this week (for Hannover)
 const lat = 52.38;
 const lon = 9.74;
 
+// fetches current temperature, tomorrows temperature, and this week's temperature
 const getWeather = async () => {
-	const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m`;
+	// fetching data from open Meteo
+	const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&hourly=temperature_2m`;
 
 	try {
 		const res = await fetch(apiURL);
 		if (!res.ok) {
 			throw new Error('Network response failed');
 		}
+		//fetch all data
 		const data = await res.json();
-		console.log('Weather data', data);
-		return data;
+		// fetch current temperature
+		const current_temperature = data.current.temperature_2m;
+		const { time, temperature_2m } = data.hourly;
+		// fetch tomorrows temperature (current day = 24, tomorrow at 12 = 24 + 12)
+		const tomorrowIndex = 36;
+		const tomorrow_time = time[tomorrowIndex];
+		const tomorrow_temp = temperature_2m[tomorrowIndex];
+
+		console.log(current_temperature)
+		console.log(tomorrow_time.split("T")[1], tomorrow_temp)
 	} catch (error) {
 		console.error('Error fetching weather data:', error);
 	}
 };
-
 
 
 client.on("ready", async () => {

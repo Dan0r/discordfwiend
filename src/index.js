@@ -49,22 +49,44 @@ const getWeather = async () => {
 		// fetch tomorrows temperature (current day = 24, tomorrow at 12 = 24 + 12)
 		const tomorrowIndex = 36;
 		const tomorrow_time = time[tomorrowIndex];
-		const tomorrow_temp = temperature_2m[tomorrowIndex];
+		const tomorrow_temperature = temperature_2m[tomorrowIndex];
 
-		console.log(current_temperature)
-		console.log(tomorrow_time.split("T")[1], tomorrow_temp)
+		return { current_temperature, tomorrow_time, tomorrow_temperature };
+
 	} catch (error) {
 		console.error('Error fetching weather data:', error);
 	}
 };
 
+const callback = (getWeatherCallback) => {
+	client.on("messageCreate", async msg => {
+		if (msg.author.bot) return;
+
+		if (msg.content === "now") {
+			const weather = await getWeatherCallback();
+			if (!weather) return msg.reply("Failed to fetch weather");
+
+			msg.reply(`${weather.current_temperature}`);
+		}
+		if (msg.content === "tomorrow") {
+			const weather = await getWeatherCallback();
+			if (!weather) return msg.reply("Failed to fetch weather");
+			
+			msg.reply(`${weather.tomorrow_temperature}`)
+
+
+		}
+	});
+};
 
 client.on("ready", async () => {
 	console.log(`Logged in as ${client.user.tag}`);
 	spice(client);
+	callback(getWeather);	
 
 	const weather = await getWeather();
 	console.log(weather);
+
 });
 
 

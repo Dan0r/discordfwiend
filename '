@@ -36,7 +36,7 @@ const getWeather = async () => {
 
 
 	// fetching data from open Meteo
-	const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&timezone=${timezone}&current=temperature_2m,weather_code&daily=temperature_2m_max,weather_code`;
+	const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&timezone=${timezone}&current=temperature_2m,weather_code&hourly=temperature_2m&daily=temperature_2m_max,weather_code`;
 
 	try {
 		const res = await fetch(apiURL);
@@ -49,17 +49,17 @@ const getWeather = async () => {
 		// fetch current temperature
 		// data from Germany is from the DWD, that updates every 3 hours
 		// fetch tomorrows temperature (current day = 24, tomorrow at 12 = 24 + 12)
-		const { temperature_2m, weather_code: current_weather_code } = data.current;
-		const current_temperature = temperature_2m
+		const { temperature_2m, weather_code: current_weather_code }= data.current;
+		const current_weather= current_weather_code[1]
+		const current_temperature = temperature_2m[1]
 
-		const { temperature_2m_max, weather_code: daily_weather_code } = data.daily;
+		const { temperature_2m_max, weather_code: daily_weather_code} = data.daily;
 		const tomorrows_temperature_max = temperature_2m_max[1]
 		const tomorrows_weather = daily_weather_code[1]
-		const todays_weather= daily_weather_code[0]
 
+		const daily_weather_code = data.daily.weather_code;
 
-
-		return { current_temperature, todays_weather, tomorrows_temperature_max, tomorrows_weather};
+		return { current_temperature, current_weather_code, tomorrows_temperature_max, tomorrows_weather_code};
 
 	} catch (error) {
 		console.error('Error fetching weather data:', error);

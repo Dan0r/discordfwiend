@@ -33,26 +33,26 @@ const weather_code_map = new Map([
 	[2, "Partly cloudy"],
 	[3, "Overcast"],
 	[45, "Fog"],
-	[48, "Fog: Depositing rime "],
-	[51, "Drizzle: Light"],
-	[53, "Drizzle: Moderate"],
-	[55, "Drizzle: Dense"],
-	[56, "Drizzle: Light freezing"],
-	[57, "Drizzle: Dense freezing"],
-	[66, "Rain: Light freezing "],
-	[67, "Rain: Heavy freezing "],
-	[71, "Snow: Slight"],
-	[73, "Snow: Moderate"],
-	[75, "Snow: Heavy"],
-	[77, "Snow: Grains"],
-	[80, "Rain: Slight"],
-	[81, "Rain: Moderate"],
-	[82, "Rain: Violent"],
-	[85, "Snow Shower: Slight"],
-	[86, "Snow Shower: Heavy"],
-	[95, "Thunderstorm: Slight"],
-	[96, "Thunderstorm: With slight hail"],
-	[99, "Thunderstorm: With heavy hail"],
+	[48, "Fog(Depositing rime"],
+	[51, "Drizzle (Light)"],
+	[53, "Drizzle (Moderate)"],
+	[55, "Drizzle (Dense)"],
+	[56, "Drizzle (Light freezing)"],
+	[57, "Drizzle (Dense freezing)"],
+	[66, "Rain (Light freezing)"],
+	[67, "Rain (Heavy freezing)"],
+	[71, "Snow (Slight)"],
+	[73, "Snow (Moderate)"],
+	[75, "Snow (Heavy)"],
+	[77, "Snow (Grains)"],
+	[80, "Rain (Slight)"],
+	[81, "Rain (Moderate)"],
+	[82, "Rain (Violent)"],
+	[85, "Snow Shower (Slight)"],
+	[86, "Snow Shower (Heavy)"],
+	[95, "Thunderstorm (Slight)"],
+	[96, "Thunderstorm (With slight hail)"],
+	[99, "Thunderstorm (With heavy hail)"],
 ]);
 
 // post what the weather will be like this week (for Hannover)
@@ -117,9 +117,9 @@ const callback = (getWeatherCallback) => {
 
 		// send data
 		if (input === "today") {
-			msg.reply(`Now: ${weather.current_temperature}°C. Maximum: ${weather.todays_temperature_max}°C`);
+			msg.reply(`Now: ${weather.current_temperature}°C. Maximum: ${weather.todays_temperature_max}°C. Most Severe Weather: ${weather.todays_weather}`);
 		} else if (input === "tomorrow")  {
-			msg.reply(`Maximum: ${weather.tomorrows_temperature_max}°C`);
+			msg.reply(`Maximum: ${weather.tomorrows_temperature_max}. Most Severe Weather: ${weather.tomorrows_weather}`);
 		}
 		else {
 			msg.reply("Invalid Input");

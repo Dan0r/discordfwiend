@@ -7,6 +7,10 @@ const commands = [
 	  name: 'today',
 	  description: 'Replies wth todays weather',
 	},
+	{
+	  name: 'tomorrow',
+	  description: 'Replies with tomorrows weather',
+	},
 ];
 
 // Set up Bot for POST-REQUEST (POST/PUT is handled by REST-API) 
@@ -14,6 +18,7 @@ const rest = new REST({ version: '10'}).setToken(process.env.TOKEN);
 
 
 // Post the slash commands to the bot
+// docs: "slash commands need to be registered only once"
 const asyncfunction = async () => {
 	try {
 		console.log('Registering slash commands ...')

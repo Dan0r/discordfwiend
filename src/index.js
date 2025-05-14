@@ -102,6 +102,7 @@ const getWeather = async () => {
 	}
 };
 
+// handle messages for weather
 const callback = (getWeatherCallback) => {
 	client.on("messageCreate", async msg => {
 		// only accept user input
@@ -126,6 +127,22 @@ const callback = (getWeatherCallback) => {
 		}
 	});
 };
+
+// listen for slash commands
+const slash = client.on('interactionCreate', async (interaction) => {
+	const weather = await getWeather();
+
+	if (!interaction.isChatInputCommand()) return;	
+	
+	if (interaction.commandName === "today") {
+		interaction.reply(`Now: ${weather.current_temperature}°C. Maximum: ${weather.todays_temperature_max}°C. Most Severe Weather: ${weather.todays_weather}`);
+	} else if (interaction.commandName === "tomorrow")  {
+		interaction.reply(`Maximum: ${weather.tomorrows_temperature_max}. Most Severe Weather: ${weather.tomorrows_weather}`);
+	} 
+	else {
+		interaction.reply("Invalid Input");
+	}
+});
 
 client.on("ready", async () => {
 	console.log(`Logged in as ${client.user.tag}`);
